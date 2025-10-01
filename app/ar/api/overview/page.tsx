@@ -10,7 +10,7 @@ import {
   Shield,
   Key,
   Info,
-  RotateCw
+  CheckCircle
 } from "lucide-react"
 
 export default function ApiOverview() {
@@ -24,72 +24,157 @@ export default function ApiOverview() {
             <h1 className="text-3xl font-bold">نظرة عامة على API</h1>
           </div>
           <p className="text-lg text-muted-foreground">
-            دليل شامل لواجهة برمجة التطبيقات
+            دليل شامل للتكامل مع واجهة برمجة التطبيقات الخاصة بنظام التذاكر
           </p>
         </div>
 
-        {/* API Basics */}
+        {/* Quick Start */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Code className="h-5 w-5" />
-              أساسيات API
+              البدء السريع
             </CardTitle>
             <CardDescription>
-              المفاهيم الأساسية والاستخدام
+              ابدأ استخدام API في دقائق
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">عنوان API</h4>
+              <h4 className="font-medium">1. احصل على مفتاح API</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-                  https://api.ksa1980.lol/v1
+{`# تواصل معنا للحصول على مفتاح API
+API_KEY=your_api_key_here
+
+# قم بتخزينه بشكل آمن في بيئة التشغيل
+export TICKET_API_KEY=your_api_key_here`}
                 </pre>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">المصادقة</h4>
+              <h4 className="font-medium">2. قم بأول طلب API</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`// مصادقة Bearer Token
-Authorization: Bearer YOUR_API_TOKEN
-
-// مثال على الطلب
-fetch('https://api.ksa1980.lol/v1/tickets', {
+{`# JavaScript/Node.js
+const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
   headers: {
-    'Authorization': 'Bearer YOUR_API_TOKEN',
+    'Authorization': \`Bearer \${process.env.TICKET_API_KEY}\`,
     'Content-Type': 'application/json'
   }
-});`}
+});
+
+const tickets = await response.json();
+
+# Python
+import requests
+
+response = requests.get(
+    'https://api.ksa1980.lol/v1/tickets',
+    headers={
+        'Authorization': f'Bearer {os.environ["TICKET_API_KEY"]}',
+        'Content-Type': 'application/json'
+    }
+)
+
+tickets = response.json()`}
                 </pre>
               </div>
             </div>
+          </CardContent>
+        </Card>
 
+        {/* Common Use Cases */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" />
+              الاستخدامات الشائعة
+            </CardTitle>
+            <CardDescription>
+              الطرق الشائعة لاستخدام API
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">تنسيق الاستجابة</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <h4 className="font-medium">إنشاء تذكرة</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-{`// استجابة ناجحة
+{`// الطلب
+{
+  "category": "technical",
+  "subject": "مشكلة في تكامل API",
+  "message": "أواجه مشكلة في المصادقة",
+  "priority": "high"
+}
+
+// الاستجابة
 {
   "success": true,
   "data": {
-    // بيانات الاستجابة
-  },
-  "meta": {
-    "page": 1,
-    "limit": 20,
-    "total": 100
+    "ticketId": "T123456",
+    "status": "open",
+    "createdAt": "2025-10-01T12:00:00Z"
   }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-medium">الحصول على حالة التذكرة</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">GET</span>
+                  <span className="path">/tickets/:ticketId</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// الاستجابة
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "in_progress",
+    "assignedTo": "فريق الدعم أ",
+    "lastUpdate": "2025-10-01T12:30:00Z",
+    "messages": [
+      {
+        "author": "support",
+        "message": "نحن نبحث في المشكلة",
+        "timestamp": "2025-10-01T12:15:00Z"
+      }
+    ]
+  }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-medium">إضافة رد على التذكرة</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets/:ticketId/replies</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// الطلب
+{
+  "message": "معلومات إضافية حول المشكلة",
+  "attachments": ["https://example.com/screenshot.png"]
 }
 
-// استجابة خطأ
+// الاستجابة
 {
-  "success": false,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "وصف الخطأ"
+  "success": true,
+  "data": {
+    "replyId": "R789012",
+    "timestamp": "2025-10-01T12:45:00Z"
   }
 }`}
                 </pre>
@@ -106,82 +191,33 @@ fetch('https://api.ksa1980.lol/v1/tickets', {
               المصادقة
             </CardTitle>
             <CardDescription>
-              كيفية المصادقة مع API
+              تأمين طلبات API
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">الحصول على رمز API</h4>
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">إنشاء رمز في إعدادات لوحة التحكم</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">الوصول إلى لوحة التحكم والانتقال إلى إعدادات API</p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">تعيين صلاحيات الرمز</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">اختيار النقاط النهائية التي يمكن للرمز الوصول إليها</p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">تخزين الرمز بشكل آمن</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">لا تكشف عن رمزك في كود جانب العميل</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">استخدام رمز API</h4>
+              <h4 className="font-medium">مصادقة Bearer Token</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`// مثال JavaScript
-const API_TOKEN = process.env.API_TOKEN;
-
-async function fetchTickets() {
-  const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
-    headers: {
-      'Authorization': \`Bearer \${API_TOKEN}\`,
-      'Content-Type': 'application/json'
-    }
-  });
-  
-  const data = await response.json();
-  return data;
-}
-
-// مثال Python
-import requests
-
-API_TOKEN = os.environ.get('API_TOKEN')
-
-def fetch_tickets():
-    headers = {
-        'Authorization': f'Bearer {API_TOKEN}',
-        'Content-Type': 'application/json'
-    }
-    
-    response = requests.get(
-        'https://api.ksa1980.lol/v1/tickets',
-        headers=headers
-    )
-    
-    return response.json()`}
+{`// يجب تضمينه في جميع طلبات API
+headers: {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json'
+}`}
                 </pre>
               </div>
             </div>
+
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                حافظ على أمان مفتاح API. لا تكشف عنه في كود جانب العميل أو المستودعات العامة.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
-        {/* Rate Limiting */}
+        {/* Rate Limits */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -194,30 +230,19 @@ def fetch_tickets():
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">حدود الطلبات</h4>
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">1000 طلب في الساعة لكل رمز</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">حد الطلبات القياسي لجميع رموز API</p>
+              <h4 className="font-medium">الحدود الافتراضية</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2 bg-muted rounded">
+                  <span>الطلبات في الدقيقة</span>
+                  <Badge>60</Badge>
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">5 طلبات متزامنة لكل رمز</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">الحد الأقصى لعدد الطلبات المتزامنة</p>
+                <div className="flex items-center justify-between p-2 bg-muted rounded">
+                  <span>الطلبات في الساعة</span>
+                  <Badge>1000</Badge>
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">ترويسات حد الطلبات مضمنة في الاستجابة</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">مراقبة استخدامك من خلال ترويسات الاستجابة</p>
+                <div className="flex items-center justify-between p-2 bg-muted rounded">
+                  <span>الطلبات المتزامنة</span>
+                  <Badge>5</Badge>
                 </div>
               </div>
             </div>
@@ -227,22 +252,19 @@ def fetch_tickets():
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
 {`// ترويسات الاستجابة
-X-RateLimit-Limit: 1000
-X-RateLimit-Remaining: 999
-X-RateLimit-Reset: 1698765432
-
-// استجابة تجاوز حد الطلبات
-{
-  "success": false,
-  "error": {
-    "code": "RATE_LIMIT_EXCEEDED",
-    "message": "تم تجاوز حد الطلبات. حاول مرة أخرى بعد 3600 ثانية",
-    "reset": 1698765432
-  }
-}`}
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+X-RateLimit-Reset: 1698765432`}
                 </pre>
               </div>
             </div>
+
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                تواصل معنا إذا كنت بحاجة إلى حدود طلبات أعلى للتكامل الخاص بك.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
@@ -250,11 +272,14 @@ X-RateLimit-Reset: 1698765432
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            <strong>أفضل الممارسات:</strong> استخدم HTTPS دائماً. 
-            قم بتخزين رموز API بشكل آمن. 
-            نفذ معالجة الأخطاء المناسبة. 
-            راقب حدود الطلبات. 
-            قم بتخزين الاستجابات مؤقتاً عند الإمكان.
+            <strong>أفضل الممارسات:</strong>
+            <ul className="mt-2 space-y-1">
+              <li>• استخدم HTTPS دائماً لطلبات API</li>
+              <li>• قم بتنفيذ معالجة الأخطاء المناسبة</li>
+              <li>• قم بتخزين الاستجابات مؤقتاً عند الإمكان</li>
+              <li>• استخدم مهلات زمنية مناسبة</li>
+              <li>• راقب استخدام API الخاص بك</li>
+            </ul>
           </AlertDescription>
         </Alert>
       </div>
