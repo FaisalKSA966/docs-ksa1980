@@ -10,8 +10,7 @@ import {
   Shield,
   Key,
   Info,
-  CheckCircle,
-  Lock
+  CheckCircle
 } from "lucide-react"
 
 export default function ApiOverview() {
@@ -25,72 +24,157 @@ export default function ApiOverview() {
             <h1 className="text-3xl font-bold">API Overview</h1>
           </div>
           <p className="text-lg text-muted-foreground">
-            Complete guide to the ticket system API
+            Complete guide to integrating with our ticket system API
           </p>
         </div>
 
-        {/* API Basics */}
+        {/* Quick Start */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Code className="h-5 w-5" />
-              API Basics
+              Quick Start
             </CardTitle>
             <CardDescription>
-              Core concepts and usage
+              Get started with the API in minutes
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">Base URL</h4>
+              <h4 className="font-medium">1. Get Your API Key</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-                  https://api.ksa1980.lol/v1
+{`# Contact us to get your API key
+API_KEY=your_api_key_here
+
+# Store it securely in your environment
+export TICKET_API_KEY=your_api_key_here`}
                 </pre>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">Authentication</h4>
+              <h4 className="font-medium">2. Make Your First API Call</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`// Bearer Token Authentication
-Authorization: Bearer YOUR_API_TOKEN
-
-// Example Request
-fetch('https://api.ksa1980.lol/v1/tickets', {
+{`# JavaScript/Node.js
+const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
   headers: {
-    'Authorization': 'Bearer YOUR_API_TOKEN',
+    'Authorization': \`Bearer \${process.env.TICKET_API_KEY}\`,
     'Content-Type': 'application/json'
   }
-});`}
+});
+
+const tickets = await response.json();
+
+# Python
+import requests
+
+response = requests.get(
+    'https://api.ksa1980.lol/v1/tickets',
+    headers={
+        'Authorization': f'Bearer {os.environ["TICKET_API_KEY"]}',
+        'Content-Type': 'application/json'
+    }
+)
+
+tickets = response.json()`}
                 </pre>
               </div>
             </div>
+          </CardContent>
+        </Card>
 
+        {/* Common Use Cases */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" />
+              Common Use Cases
+            </CardTitle>
+            <CardDescription>
+              Popular ways to use our API
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">Response Format</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <h4 className="font-medium">Create a Ticket</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-{`// Success Response
+{`// Request
+{
+  "category": "technical",
+  "subject": "API Integration Issue",
+  "message": "Having trouble with authentication",
+  "priority": "high"
+}
+
+// Response
 {
   "success": true,
   "data": {
-    // Response data
-  },
-  "meta": {
-    "page": 1,
-    "limit": 20,
-    "total": 100
+    "ticketId": "T123456",
+    "status": "open",
+    "createdAt": "2025-10-01T12:00:00Z"
   }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-medium">Get Ticket Status</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">GET</span>
+                  <span className="path">/tickets/:ticketId</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// Response
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "in_progress",
+    "assignedTo": "Support Team A",
+    "lastUpdate": "2025-10-01T12:30:00Z",
+    "messages": [
+      {
+        "author": "support",
+        "message": "We're looking into this",
+        "timestamp": "2025-10-01T12:15:00Z"
+      }
+    ]
+  }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-medium">Add Reply to Ticket</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets/:ticketId/replies</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// Request
+{
+  "message": "Additional information about the issue",
+  "attachments": ["https://example.com/screenshot.png"]
 }
 
-// Error Response
+// Response
 {
-  "success": false,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Error description"
+  "success": true,
+  "data": {
+    "replyId": "R789012",
+    "timestamp": "2025-10-01T12:45:00Z"
   }
 }`}
                 </pre>
@@ -107,87 +191,38 @@ fetch('https://api.ksa1980.lol/v1/tickets', {
               Authentication
             </CardTitle>
             <CardDescription>
-              How to authenticate with the API
+              Secure your API requests
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">Getting API Token</h4>
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">Generate token in dashboard settings</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Access your dashboard and navigate to API settings</p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">Set token permissions</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Choose which endpoints the token can access</p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">Store token securely</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Never expose your token in client-side code</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">Using API Token</h4>
+              <h4 className="font-medium">Bearer Token Authentication</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`// JavaScript Example
-const API_TOKEN = process.env.API_TOKEN;
-
-async function fetchTickets() {
-  const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
-    headers: {
-      'Authorization': \`Bearer \${API_TOKEN}\`,
-      'Content-Type': 'application/json'
-    }
-  });
-  
-  const data = await response.json();
-  return data;
-}
-
-// Python Example
-import requests
-
-API_TOKEN = os.environ.get('API_TOKEN')
-
-def fetch_tickets():
-    headers = {
-        'Authorization': f'Bearer {API_TOKEN}',
-        'Content-Type': 'application/json'
-    }
-    
-    response = requests.get(
-        'https://api.ksa1980.lol/v1/tickets',
-        headers=headers
-    )
-    
-    return response.json()`}
+{`// Include in all API requests
+headers: {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json'
+}`}
                 </pre>
               </div>
             </div>
+
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Keep your API key secure. Never expose it in client-side code or public repositories.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
-        {/* Rate Limiting */}
+        {/* Rate Limits */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Shield className="h-5 w-5" />
-              Rate Limiting
+              Rate Limits
             </CardTitle>
             <CardDescription>
               API request limits and quotas
@@ -195,30 +230,19 @@ def fetch_tickets():
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">Rate Limits</h4>
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">1000 requests per hour per token</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Standard rate limit for all API tokens</p>
+              <h4 className="font-medium">Default Limits</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2 bg-muted rounded">
+                  <span>Requests per minute</span>
+                  <Badge>60</Badge>
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">5 concurrent requests per token</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Maximum number of simultaneous requests</p>
+                <div className="flex items-center justify-between p-2 bg-muted rounded">
+                  <span>Requests per hour</span>
+                  <Badge>1000</Badge>
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm">Rate limit headers included in response</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Monitor your usage through response headers</p>
+                <div className="flex items-center justify-between p-2 bg-muted rounded">
+                  <span>Concurrent requests</span>
+                  <Badge>5</Badge>
                 </div>
               </div>
             </div>
@@ -228,115 +252,19 @@ def fetch_tickets():
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
 {`// Response Headers
-X-RateLimit-Limit: 1000
-X-RateLimit-Remaining: 999
-X-RateLimit-Reset: 1698765432
-
-// Rate Limit Error Response
-{
-  "success": false,
-  "error": {
-    "code": "RATE_LIMIT_EXCEEDED",
-    "message": "Rate limit exceeded. Try again in 3600 seconds",
-    "reset": 1698765432
-  }
-}`}
-                </pre>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Error Handling */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Lock className="h-5 w-5" />
-              Error Handling
-            </CardTitle>
-            <CardDescription>
-              Understanding and handling API errors
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium">Error Codes</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`// Common Error Codes
-400 Bad Request
-  - INVALID_PARAMETERS
-  - MISSING_REQUIRED_FIELD
-  - VALIDATION_ERROR
-
-401 Unauthorized
-  - INVALID_TOKEN
-  - TOKEN_EXPIRED
-  - MISSING_TOKEN
-
-403 Forbidden
-  - INSUFFICIENT_PERMISSIONS
-  - TOKEN_REVOKED
-  - ACCOUNT_SUSPENDED
-
-404 Not Found
-  - RESOURCE_NOT_FOUND
-  - ENDPOINT_NOT_FOUND
-
-429 Too Many Requests
-  - RATE_LIMIT_EXCEEDED
-
-500 Internal Server Error
-  - SERVER_ERROR
-  - DATABASE_ERROR`}
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+X-RateLimit-Reset: 1698765432`}
                 </pre>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="font-medium">Error Handling Example</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`// JavaScript Error Handling
-async function createTicket(data) {
-  try {
-    const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
-      method: 'POST',
-      headers: {
-        'Authorization': \`Bearer \${API_TOKEN}\`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    
-    const result = await response.json();
-    
-    if (!response.ok) {
-      switch (response.status) {
-        case 400:
-          throw new Error('Invalid request: ' + result.error.message);
-        case 401:
-          throw new Error('Authentication failed');
-        case 403:
-          throw new Error('Permission denied');
-        case 404:
-          throw new Error('Resource not found');
-        case 429:
-          throw new Error('Rate limit exceeded');
-        default:
-          throw new Error('Server error');
-      }
-    }
-    
-    return result;
-  } catch (error) {
-    console.error('API Error:', error);
-    throw error;
-  }
-}`}
-                </pre>
-              </div>
-            </div>
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Contact us if you need higher rate limits for your integration.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
@@ -344,11 +272,14 @@ async function createTicket(data) {
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            <strong>Best Practices:</strong> Always use HTTPS. 
-            Store API tokens securely. 
-            Implement proper error handling. 
-            Monitor rate limits. 
-            Cache responses when possible.
+            <strong>Best Practices:</strong>
+            <ul className="mt-2 space-y-1">
+              <li>• Always use HTTPS for API requests</li>
+              <li>• Implement proper error handling</li>
+              <li>• Cache responses when possible</li>
+              <li>• Use appropriate timeouts</li>
+              <li>• Monitor your API usage</li>
+            </ul>
           </AlertDescription>
         </Alert>
       </div>
