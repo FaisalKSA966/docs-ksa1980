@@ -1,0 +1,74 @@
+---
+sidebar_label: Installation
+title: Installation
+description: Steps to install and configure the Ticket Management System.
+---
+
+# Installation
+
+Follow these steps to install and configure the Ticket Management System on your own infrastructure.
+
+## Prerequisites
+
+- **Node.js 18+**: Ensure that your environment has Node.js v18 or later installed.
+- **Package manager**: Use **npm** or **yarn** for managing dependencies.
+- **MongoDB Atlas**: Create a database cluster on [MongoDB Atlas](https://www.mongodb.com/atlas) or use your own MongoDB server.
+- **Discord Application & Bot Token**: Register your bot on the Discord Developer Portal and note down the bot token.
+
+## Clone the repository
+
+```bash
+git clone https://github.com/FaisalKSA966/docs-ksa1980.git
+cd docs-ksa1980
+```
+
+## Install dependencies
+
+Install all necessary dependencies using your preferred package manager:
+
+```bash
+# With npm
+npm install
+
+# Or with yarn
+yarn install
+```
+
+## Configure environment variables
+
+Create a `.env.local` file in the project root and add the following variables:
+
+```bash
+# Discord settings
+DISCORD_TOKEN=your-bot-token
+DISCORD_CLIENT_ID=your-client-id
+DISCORD_GUILD_ID=your-guild-id
+
+# MongoDB settings
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/dbname
+```
+
+Replace the placeholder values with your actual credentials.
+
+## Run the development server
+
+Start the Next.js development server:
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:3000` in your browser to access the web dashboard and documentation.
+
+## Build for production
+
+To create an optimized production build:
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+For detailed configuration options and deployment instructions, see the [Deployment](./deployment.md) guide.
