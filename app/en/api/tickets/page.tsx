@@ -25,86 +25,9 @@ export default function ApiTickets() {
             <h1 className="text-3xl font-bold">Tickets API</h1>
           </div>
           <p className="text-lg text-muted-foreground">
-            Complete guide to the tickets endpoints
+            Complete guide to managing tickets through the API
           </p>
         </div>
-
-        {/* List Tickets */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              List Tickets
-            </CardTitle>
-            <CardDescription>
-              Get a list of tickets with filtering and pagination
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium">Endpoint</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-                  GET /tickets
-                </pre>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">Query Parameters</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`{
-  "page": "Page number (default: 1)",
-  "limit": "Items per page (default: 20, max: 100)",
-  "status": "open | claimed | closed",
-  "category": "technical | general | complaint | feature | other",
-  "priority": "low | normal | high | urgent",
-  "userId": "Filter by user ID",
-  "guildId": "Filter by guild ID",
-  "startDate": "Filter by creation date (ISO string)",
-  "endDate": "Filter by creation date (ISO string)"
-}`}
-                </pre>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">Response</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`{
-  "success": true,
-  "data": [
-    {
-      "ticketId": "string",
-      "userId": "string",
-      "guildId": "string",
-      "category": "string",
-      "priority": "string",
-      "status": "string",
-      "subject": "string",
-      "message": "string",
-      "attachments": ["string"],
-      "createdAt": "string",
-      "updatedAt": "string",
-      "closedAt": "string",
-      "claimedBy": "string",
-      "rating": "number",
-      "feedback": "string"
-    }
-  ],
-  "meta": {
-    "page": 1,
-    "limit": 20,
-    "total": 100
-  }
-}`}
-                </pre>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Create Ticket */}
         <Card>
@@ -114,54 +37,159 @@ export default function ApiTickets() {
               Create Ticket
             </CardTitle>
             <CardDescription>
-              Create a new ticket
+              Create a new support ticket
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <h4 className="font-medium">Endpoint</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-                  POST /tickets
-                </pre>
-              </div>
-            </div>
+{`// Request Body
+{
+  "category": "technical",     // Required: technical | general | complaint | feature | other
+  "subject": "string",         // Required: max 200 characters
+  "message": "string",         // Required: max 2000 characters
+  "priority": "normal",        // Optional: low | normal | high | urgent
+  "attachments": ["string"]    // Optional: array of file URLs
+}
 
-            <div className="space-y-4">
-              <h4 className="font-medium">Request Body</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`{
-  "userId": "string (required)",
-  "guildId": "string (required)",
-  "category": "string (required)",
-  "priority": "string (default: normal)",
-  "subject": "string (required)",
-  "message": "string (required)",
-  "attachments": ["string"]
+// Response
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "open",
+    "createdAt": "2025-10-01T12:00:00Z",
+    "category": "technical",
+    "priority": "normal",
+    "subject": "API Integration Issue",
+    "message": "Having trouble with authentication"
+  }
 }`}
                 </pre>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">Response</h4>
+              <h4 className="font-medium">Example</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`{
+{`// JavaScript
+async function createTicket(data) {
+  const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
+    method: 'POST',
+    headers: {
+      'Authorization': \`Bearer \${API_KEY}\`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  
+  return response.json();
+}
+
+// Create ticket
+const ticket = await createTicket({
+  category: 'technical',
+  subject: 'API Integration Issue',
+  message: 'Having trouble with authentication',
+  priority: 'high'
+});`}
+                </pre>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Get Tickets */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Search className="h-5 w-5" />
+              Get Tickets
+            </CardTitle>
+            <CardDescription>
+              List and filter tickets
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <h4 className="font-medium">List Tickets</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">GET</span>
+                  <span className="path">/tickets</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// Query Parameters
+{
+  "page": "number",           // Optional: default 1
+  "limit": "number",          // Optional: default 20, max 100
+  "status": "string",         // Optional: open | claimed | closed
+  "category": "string",       // Optional: technical | general | complaint | feature | other
+  "priority": "string",       // Optional: low | normal | high | urgent
+  "startDate": "string",      // Optional: ISO date string
+  "endDate": "string"         // Optional: ISO date string
+}
+
+// Response
+{
+  "success": true,
+  "data": [
+    {
+      "ticketId": "T123456",
+      "status": "open",
+      "category": "technical",
+      "priority": "high",
+      "subject": "API Integration Issue",
+      "createdAt": "2025-10-01T12:00:00Z",
+      "updatedAt": "2025-10-01T12:00:00Z"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 45
+  }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-medium">Get Single Ticket</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">GET</span>
+                  <span className="path">/tickets/:ticketId</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// Response
+{
   "success": true,
   "data": {
-    "ticketId": "string",
-    "userId": "string",
-    "guildId": "string",
-    "category": "string",
-    "priority": "string",
+    "ticketId": "T123456",
     "status": "open",
-    "subject": "string",
-    "message": "string",
-    "attachments": ["string"],
-    "createdAt": "string",
-    "updatedAt": "string"
+    "category": "technical",
+    "priority": "high",
+    "subject": "API Integration Issue",
+    "message": "Having trouble with authentication",
+    "attachments": [],
+    "createdAt": "2025-10-01T12:00:00Z",
+    "updatedAt": "2025-10-01T12:00:00Z",
+    "messages": [
+      {
+        "id": "M789012",
+        "author": "user",
+        "message": "Initial message",
+        "timestamp": "2025-10-01T12:00:00Z"
+      }
+    ]
   }
 }`}
                 </pre>
@@ -178,60 +206,67 @@ export default function ApiTickets() {
               Update Ticket
             </CardTitle>
             <CardDescription>
-              Update an existing ticket
+              Update ticket details and status
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">Endpoint</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <h4 className="font-medium">Update Ticket</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">PUT</span>
+                  <span className="path">/tickets/:ticketId</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-                  PUT /tickets/:ticketId
-                </pre>
-              </div>
-            </div>
+{`// Request Body
+{
+  "status": "string",         // Optional: open | claimed | closed
+  "priority": "string",       // Optional: low | normal | high | urgent
+  "category": "string",       // Optional: technical | general | complaint | feature | other
+  "subject": "string",        // Optional: max 200 characters
+  "message": "string"         // Optional: max 2000 characters
+}
 
-            <div className="space-y-4">
-              <h4 className="font-medium">Request Body</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`{
-  "status": "string",
-  "priority": "string",
-  "category": "string",
-  "subject": "string",
-  "message": "string",
-  "attachments": ["string"],
-  "claimedBy": "string",
-  "rating": "number",
-  "feedback": "string"
+// Response
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "claimed",
+    "category": "technical",
+    "priority": "high",
+    "subject": "Updated: API Integration Issue",
+    "updatedAt": "2025-10-01T12:30:00Z"
+  }
 }`}
                 </pre>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">Response</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <h4 className="font-medium">Add Reply</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets/:ticketId/replies</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-{`{
+{`// Request Body
+{
+  "message": "string",         // Required: max 2000 characters
+  "attachments": ["string"],   // Optional: array of file URLs
+  "internal": false           // Optional: true for staff-only notes
+}
+
+// Response
+{
   "success": true,
   "data": {
-    "ticketId": "string",
-    "userId": "string",
-    "guildId": "string",
-    "category": "string",
-    "priority": "string",
-    "status": "string",
-    "subject": "string",
-    "message": "string",
-    "attachments": ["string"],
-    "createdAt": "string",
-    "updatedAt": "string",
-    "closedAt": "string",
-    "claimedBy": "string",
-    "rating": "number",
-    "feedback": "string"
+    "replyId": "R789012",
+    "message": "Working on the issue",
+    "author": "support",
+    "timestamp": "2025-10-01T12:45:00Z",
+    "internal": false
   }
 }`}
                 </pre>
@@ -248,200 +283,33 @@ export default function ApiTickets() {
               Delete Ticket
             </CardTitle>
             <CardDescription>
-              Delete an existing ticket
+              Permanently delete a ticket
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium">Endpoint</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-                  DELETE /tickets/:ticketId
-                </pre>
-              </div>
-            </div>
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                This action cannot be undone. Only administrators can delete tickets.
+              </AlertDescription>
+            </Alert>
 
             <div className="space-y-4">
-              <h4 className="font-medium">Response</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <h4 className="font-medium">Delete Ticket</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">DELETE</span>
+                  <span className="path">/tickets/:ticketId</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-{`{
+{`// Response
+{
   "success": true,
   "data": {
-    "message": "Ticket deleted successfully"
+    "message": "Ticket deleted successfully",
+    "ticketId": "T123456"
   }
 }`}
-                </pre>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Code Examples */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code className="h-5 w-5" />
-              Code Examples
-            </CardTitle>
-            <CardDescription>
-              Examples of using the tickets API
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium">JavaScript Example</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`// List tickets
-async function listTickets(filters = {}) {
-  const params = new URLSearchParams(filters);
-  
-  const response = await fetch(
-    \`https://api.ksa1980.lol/v1/tickets?\${params}\`,
-    {
-      headers: {
-        'Authorization': \`Bearer \${API_TOKEN}\`,
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-  
-  return response.json();
-}
-
-// Create ticket
-async function createTicket(data) {
-  const response = await fetch(
-    'https://api.ksa1980.lol/v1/tickets',
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': \`Bearer \${API_TOKEN}\`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }
-  );
-  
-  return response.json();
-}
-
-// Update ticket
-async function updateTicket(ticketId, data) {
-  const response = await fetch(
-    \`https://api.ksa1980.lol/v1/tickets/\${ticketId}\`,
-    {
-      method: 'PUT',
-      headers: {
-        'Authorization': \`Bearer \${API_TOKEN}\`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }
-  );
-  
-  return response.json();
-}
-
-// Delete ticket
-async function deleteTicket(ticketId) {
-  const response = await fetch(
-    \`https://api.ksa1980.lol/v1/tickets/\${ticketId}\`,
-    {
-      method: 'DELETE',
-      headers: {
-        'Authorization': \`Bearer \${API_TOKEN}\`,
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-  
-  return response.json();
-}`}
-                </pre>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">Python Example</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`import requests
-
-class TicketsAPI:
-    def __init__(self, api_token):
-        self.api_token = api_token
-        self.base_url = 'https://api.ksa1980.lol/v1'
-        self.headers = {
-            'Authorization': f'Bearer {api_token}',
-            'Content-Type': 'application/json'
-        }
-    
-    def list_tickets(self, **filters):
-        response = requests.get(
-            f'{self.base_url}/tickets',
-            headers=self.headers,
-            params=filters
-        )
-        return response.json()
-    
-    def create_ticket(self, data):
-        response = requests.post(
-            f'{self.base_url}/tickets',
-            headers=self.headers,
-            json=data
-        )
-        return response.json()
-    
-    def update_ticket(self, ticket_id, data):
-        response = requests.put(
-            f'{self.base_url}/tickets/{ticket_id}',
-            headers=self.headers,
-            json=data
-        )
-        return response.json()
-    
-    def delete_ticket(self, ticket_id):
-        response = requests.delete(
-            f'{self.base_url}/tickets/{ticket_id}',
-            headers=self.headers
-        )
-        return response.json()
-
-# Usage example
-api = TicketsAPI('YOUR_API_TOKEN')
-
-# List tickets
-tickets = api.list_tickets(
-    status='open',
-    category='technical',
-    page=1,
-    limit=20
-)
-
-# Create ticket
-new_ticket = api.create_ticket({
-    'userId': '123456789',
-    'guildId': '987654321',
-    'category': 'technical',
-    'priority': 'normal',
-    'subject': 'Test ticket',
-    'message': 'This is a test ticket'
-})
-
-# Update ticket
-updated_ticket = api.update_ticket(
-    'ticket_id',
-    {
-        'status': 'closed',
-        'rating': 5,
-        'feedback': 'Great support!'
-    }
-)
-
-# Delete ticket
-result = api.delete_ticket('ticket_id')`}
                 </pre>
               </div>
             </div>
@@ -452,11 +320,14 @@ result = api.delete_ticket('ticket_id')`}
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            <strong>Best Practices:</strong> Use appropriate HTTP methods. 
-            Include error handling. 
-            Validate input data. 
-            Use pagination for large datasets. 
-            Cache responses when possible.
+            <strong>Best Practices:</strong>
+            <ul className="mt-2 space-y-1">
+              <li>• Always validate input data before sending</li>
+              <li>• Handle rate limits appropriately</li>
+              <li>• Implement proper error handling</li>
+              <li>• Use appropriate timeouts</li>
+              <li>• Keep track of ticket IDs</li>
+            </ul>
           </AlertDescription>
         </Alert>
       </div>

@@ -1,24 +1,20 @@
+"use client"
+
 import { DocsLayout } from "@/components/docs-layout"
 import { arNavigation } from "@/lib/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { 
-  MessageSquare, 
-  Plus, 
-  Edit, 
-  Trash2,
-  Search,
-  Filter,
-  CheckCircle,
-  AlertTriangle,
-  Info,
+  MessageSquare,
   Code,
-  Copy
+  Search,
+  Plus,
+  Edit,
+  Trash,
+  Info
 } from "lucide-react"
 
-export default function APITickets() {
+export default function ApiTickets() {
   return (
     <DocsLayout navigation={arNavigation} lang="ar">
       <div className="space-y-8">
@@ -26,310 +22,174 @@ export default function APITickets() {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <MessageSquare className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">API التذاكر</h1>
+            <h1 className="text-3xl font-bold">واجهة برمجة التذاكر</h1>
           </div>
           <p className="text-lg text-muted-foreground">
-            إدارة التذاكر عبر واجهة برمجة التطبيقات
+            دليل شامل لإدارة التذاكر عبر API
           </p>
         </div>
 
-        {/* Endpoints Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">GET /tickets</CardTitle>
-              <Search className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm">جلب قائمة التذاكر</div>
-              <p className="text-xs text-muted-foreground">
-                مع فلترة وبحث
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">POST /tickets</CardTitle>
-              <Plus className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm">إنشاء تذكرة جديدة</div>
-              <p className="text-xs text-muted-foreground">
-                مع التحقق من البيانات
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">PUT /tickets/:id</CardTitle>
-              <Edit className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm">تحديث تذكرة</div>
-              <p className="text-xs text-muted-foreground">
-                تحديث جزئي أو كامل
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">DELETE /tickets/:id</CardTitle>
-              <Trash2 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm">حذف تذكرة</div>
-              <p className="text-xs text-muted-foreground">
-                حذف نهائي أو مؤقت
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* GET /tickets */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              GET /api/tickets
-            </CardTitle>
-            <CardDescription>
-              جلب قائمة التذاكر مع إمكانية الفلترة والبحث
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium">معاملات الاستعلام (Query Parameters)</h4>
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">userId</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">فلترة حسب معرف المستخدم</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">status</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">فلترة حسب الحالة (open, closed, claimed)</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">category</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">فلترة حسب الفئة</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">priority</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">فلترة حسب الأولوية</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">page</span>
-                      <Badge variant="outline">number</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">رقم الصفحة (افتراضي: 1)</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">limit</span>
-                      <Badge variant="outline">number</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">عدد النتائج (افتراضي: 20)</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">مثال على الطلب</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`GET /api/tickets?status=open&category=technical&page=1&limit=10
-Authorization: Bearer YOUR_TOKEN
-Content-Type: application/json`}
-                </pre>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">مثال على الاستجابة</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`{
-  "success": true,
-  "data": {
-    "tickets": [
-      {
-        "id": "ticket_123456789",
-        "channelId": "987654321098765432",
-        "userId": "123456789012345678",
-        "username": "أحمد محمد",
-        "userAvatar": "https://cdn.discordapp.com/avatars/...",
-        "status": "open",
-        "category": "technical",
-        "priority": "high",
-        "createdAt": "2024-01-15T10:30:00Z",
-        "updatedAt": "2024-01-15T12:45:00Z",
-        "claimedBy": null,
-        "closedBy": null,
-        "messages": [...],
-        "adminLog": [...],
-        "rating": null,
-        "feedback": null
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 10,
-      "total": 45,
-      "pages": 5
-    }
-  }
-}`}
-                </pre>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* POST /tickets */}
+        {/* Create Ticket */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Plus className="h-5 w-5" />
-              POST /api/tickets
+              إنشاء تذكرة
             </CardTitle>
             <CardDescription>
-              إنشاء تذكرة جديدة
+              إنشاء تذكرة دعم جديدة
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">معاملات الطلب (Request Body)</h4>
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">userId</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="destructive">مطلوب</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">معرف المستخدم</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">username</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="destructive">مطلوب</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">اسم المستخدم</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">category</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="destructive">مطلوب</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">فئة التذكرة</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">priority</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">أولوية التذكرة (افتراضي: normal)</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">message</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="destructive">مطلوب</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">رسالة التذكرة الأولى</p>
-                  </div>
+              <h4 className="font-medium">نقطة النهاية</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">مثال على الطلب</h4>
-              <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`POST /api/tickets
-Authorization: Bearer YOUR_TOKEN
-Content-Type: application/json
-
+{`// محتوى الطلب
 {
-  "userId": "123456789012345678",
-  "username": "أحمد محمد",
-  "category": "technical",
-  "priority": "high",
-  "message": "لا أستطيع الدخول للعبة، تظهر رسالة خطأ"
+  "category": "technical",     // مطلوب: technical | general | complaint | feature | other
+  "subject": "string",         // مطلوب: 200 حرف كحد أقصى
+  "message": "string",         // مطلوب: 2000 حرف كحد أقصى
+  "priority": "normal",        // اختياري: low | normal | high | urgent
+  "attachments": ["string"]    // اختياري: مصفوفة من روابط الملفات
+}
+
+// الاستجابة
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "open",
+    "createdAt": "2025-10-01T12:00:00Z",
+    "category": "technical",
+    "priority": "normal",
+    "subject": "مشكلة في تكامل API",
+    "message": "أواجه مشكلة في المصادقة"
+  }
 }`}
                 </pre>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">مثال على الاستجابة</h4>
+              <h4 className="font-medium">مثال</h4>
               <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`{
+{`// JavaScript
+async function createTicket(data) {
+  const response = await fetch('https://api.ksa1980.lol/v1/tickets', {
+    method: 'POST',
+    headers: {
+      'Authorization': \`Bearer \${API_KEY}\`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  
+  return response.json();
+}
+
+// إنشاء تذكرة
+const ticket = await createTicket({
+  category: 'technical',
+  subject: 'مشكلة في تكامل API',
+  message: 'أواجه مشكلة في المصادقة',
+  priority: 'high'
+});`}
+                </pre>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Get Tickets */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Search className="h-5 w-5" />
+              الحصول على التذاكر
+            </CardTitle>
+            <CardDescription>
+              عرض وتصفية التذاكر
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <h4 className="font-medium">قائمة التذاكر</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">GET</span>
+                  <span className="path">/tickets</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// معلمات الاستعلام
+{
+  "page": "number",           // اختياري: الافتراضي 1
+  "limit": "number",          // اختياري: الافتراضي 20، الحد الأقصى 100
+  "status": "string",         // اختياري: open | claimed | closed
+  "category": "string",       // اختياري: technical | general | complaint | feature | other
+  "priority": "string",       // اختياري: low | normal | high | urgent
+  "startDate": "string",      // اختياري: تاريخ ISO
+  "endDate": "string"         // اختياري: تاريخ ISO
+}
+
+// الاستجابة
+{
   "success": true,
-  "data": {
-    "ticket": {
-      "id": "ticket_123456789",
-      "channelId": "987654321098765432",
-      "userId": "123456789012345678",
-      "username": "أحمد محمد",
-      "userAvatar": "https://cdn.discordapp.com/avatars/...",
+  "data": [
+    {
+      "ticketId": "T123456",
       "status": "open",
       "category": "technical",
       "priority": "high",
-      "createdAt": "2024-01-15T10:30:00Z",
-      "updatedAt": "2024-01-15T10:30:00Z",
-      "claimedBy": null,
-      "closedBy": null,
-      "messages": [
-        {
-          "id": "msg_123456789",
-          "userId": "123456789012345678",
-          "username": "أحمد محمد",
-          "content": "لا أستطيع الدخول للعبة، تظهر رسالة خطأ",
-          "timestamp": "2024-01-15T10:30:00Z",
-          "attachments": []
-        }
-      ],
-      "adminLog": [],
-      "rating": null,
-      "feedback": null
+      "subject": "مشكلة في تكامل API",
+      "createdAt": "2025-10-01T12:00:00Z",
+      "updatedAt": "2025-10-01T12:00:00Z"
     }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 45
+  }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-medium">الحصول على تذكرة واحدة</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">GET</span>
+                  <span className="path">/tickets/:ticketId</span>
+                </div>
+                <pre className="text-sm overflow-x-auto">
+{`// الاستجابة
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "open",
+    "category": "technical",
+    "priority": "high",
+    "subject": "مشكلة في تكامل API",
+    "message": "أواجه مشكلة في المصادقة",
+    "attachments": [],
+    "createdAt": "2025-10-01T12:00:00Z",
+    "updatedAt": "2025-10-01T12:00:00Z",
+    "messages": [
+      {
+        "id": "M789012",
+        "author": "user",
+        "message": "الرسالة الأولية",
+        "timestamp": "2025-10-01T12:00:00Z"
+      }
+    ]
   }
 }`}
                 </pre>
@@ -338,122 +198,75 @@ Content-Type: application/json
           </CardContent>
         </Card>
 
-        {/* PUT /tickets/:id */}
+        {/* Update Ticket */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Edit className="h-5 w-5" />
-              PUT /api/tickets/:id
+              تحديث التذكرة
             </CardTitle>
             <CardDescription>
-              تحديث تذكرة موجودة
+              تحديث تفاصيل وحالة التذكرة
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h4 className="font-medium">معاملات الطلب (Request Body)</h4>
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">status</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">حالة التذكرة</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">priority</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">أولوية التذكرة</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">claimedBy</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">معرف من استلم التذكرة</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">closedBy</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">معرف من أغلق التذكرة</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">rating</span>
-                      <Badge variant="outline">number</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">تقييم التذكرة (1-5)</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">feedback</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">تعليق على التذكرة</p>
-                  </div>
+              <h4 className="font-medium">تحديث التذكرة</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">PUT</span>
+                  <span className="path">/tickets/:ticketId</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">مثال على الطلب</h4>
-              <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`PUT /api/tickets/ticket_123456789
-Authorization: Bearer YOUR_TOKEN
-Content-Type: application/json
-
+{`// محتوى الطلب
 {
-  "status": "closed",
-  "closedBy": "support_user_123",
-  "rating": 5,
-  "feedback": "تم حل المشكلة بنجاح"
+  "status": "string",         // اختياري: open | claimed | closed
+  "priority": "string",       // اختياري: low | normal | high | urgent
+  "category": "string",       // اختياري: technical | general | complaint | feature | other
+  "subject": "string",        // اختياري: 200 حرف كحد أقصى
+  "message": "string"         // اختياري: 2000 حرف كحد أقصى
+}
+
+// الاستجابة
+{
+  "success": true,
+  "data": {
+    "ticketId": "T123456",
+    "status": "claimed",
+    "category": "technical",
+    "priority": "high",
+    "subject": "تحديث: مشكلة في تكامل API",
+    "updatedAt": "2025-10-01T12:30:00Z"
+  }
 }`}
                 </pre>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-medium">مثال على الاستجابة</h4>
-              <div className="bg-muted p-4 rounded-lg">
+              <h4 className="font-medium">إضافة رد</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">POST</span>
+                  <span className="path">/tickets/:ticketId/replies</span>
+                </div>
                 <pre className="text-sm overflow-x-auto">
-{`{
+{`// محتوى الطلب
+{
+  "message": "string",         // مطلوب: 2000 حرف كحد أقصى
+  "attachments": ["string"],   // اختياري: مصفوفة من روابط الملفات
+  "internal": false           // اختياري: true للملاحظات الداخلية للموظفين
+}
+
+// الاستجابة
+{
   "success": true,
   "data": {
-    "ticket": {
-      "id": "ticket_123456789",
-      "channelId": "987654321098765432",
-      "userId": "123456789012345678",
-      "username": "أحمد محمد",
-      "userAvatar": "https://cdn.discordapp.com/avatars/...",
-      "status": "closed",
-      "category": "technical",
-      "priority": "high",
-      "createdAt": "2024-01-15T10:30:00Z",
-      "updatedAt": "2024-01-15T14:20:00Z",
-      "claimedBy": "support_user_123",
-      "closedBy": "support_user_123",
-      "messages": [...],
-      "adminLog": [...],
-      "rating": 5,
-      "feedback": "تم حل المشكلة بنجاح"
-    }
+    "replyId": "R789012",
+    "message": "جاري العمل على المشكلة",
+    "author": "support",
+    "timestamp": "2025-10-01T12:45:00Z",
+    "internal": false
   }
 }`}
                 </pre>
@@ -462,141 +275,42 @@ Content-Type: application/json
           </CardContent>
         </Card>
 
-        {/* DELETE /tickets/:id */}
+        {/* Delete Ticket */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Trash2 className="h-5 w-5" />
-              DELETE /api/tickets/:id
+              <Trash className="h-5 w-5" />
+              حذف التذكرة
             </CardTitle>
             <CardDescription>
-              حذف تذكرة
+              حذف تذكرة بشكل دائم
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium">معاملات الاستعلام (Query Parameters)</h4>
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">permanent</span>
-                      <Badge variant="outline">boolean</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">حذف نهائي أم مؤقت (افتراضي: false)</p>
-                  </div>
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                لا يمكن التراجع عن هذا الإجراء. فقط المسؤولون يمكنهم حذف التذاكر.
+              </AlertDescription>
+            </Alert>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">reason</span>
-                      <Badge variant="outline">string</Badge>
-                      <Badge variant="secondary">اختياري</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">سبب الحذف</p>
-                  </div>
+            <div className="space-y-4">
+              <h4 className="font-medium">حذف التذكرة</h4>
+              <div className="bg-muted p-4 rounded-lg api-endpoint">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="method">DELETE</span>
+                  <span className="path">/tickets/:ticketId</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">مثال على الطلب</h4>
-              <div className="bg-muted p-4 rounded-lg">
                 <pre className="text-sm overflow-x-auto">
-{`DELETE /api/tickets/ticket_123456789?permanent=false&reason=duplicate
-Authorization: Bearer YOUR_TOKEN
-Content-Type: application/json`}
-                </pre>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="font-medium">مثال على الاستجابة</h4>
-              <div className="bg-muted p-4 rounded-lg">
-                <pre className="text-sm overflow-x-auto">
-{`{
+{`// الاستجابة
+{
   "success": true,
   "data": {
     "message": "تم حذف التذكرة بنجاح",
-    "ticketId": "ticket_123456789",
-    "deletedAt": "2024-01-15T15:30:00Z",
-    "permanent": false,
-    "reason": "duplicate"
+    "ticketId": "T123456"
   }
 }`}
                 </pre>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Error Responses */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              استجابات الأخطاء
-            </CardTitle>
-            <CardDescription>
-              الأخطاء الشائعة وكيفية التعامل معها
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <h4 className="font-medium">400 - Bad Request</h4>
-                <div className="bg-muted p-4 rounded-lg">
-                  <pre className="text-sm overflow-x-auto">
-{`{
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "البيانات المرسلة غير صحيحة",
-    "details": {
-      "field": "userId",
-      "reason": "المعرف مطلوب"
-    }
-  }
-}`}
-                  </pre>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="font-medium">404 - Not Found</h4>
-                <div className="bg-muted p-4 rounded-lg">
-                  <pre className="text-sm overflow-x-auto">
-{`{
-  "success": false,
-  "error": {
-    "code": "NOT_FOUND_ERROR",
-    "message": "التذكرة غير موجودة",
-    "details": {
-      "ticketId": "ticket_123456789"
-    }
-  }
-}`}
-                  </pre>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="font-medium">403 - Forbidden</h4>
-                <div className="bg-muted p-4 rounded-lg">
-                  <pre className="text-sm overflow-x-auto">
-{`{
-  "success": false,
-  "error": {
-    "code": "AUTHORIZATION_ERROR",
-    "message": "ليس لديك صلاحية لحذف هذه التذكرة",
-    "details": {
-      "requiredRole": "admin",
-      "userRole": "support"
-    }
-  }
-}`}
-                  </pre>
-                </div>
               </div>
             </div>
           </CardContent>
@@ -606,8 +320,14 @@ Content-Type: application/json`}
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            <strong>أفضل الممارسات:</strong> استخدم الفلترة لتقليل حجم البيانات. 
-            تحقق من صحة البيانات قبل الإرسال. استخدم التحديث الجزئي لتوفير النطاق الترددي.
+            <strong>أفضل الممارسات:</strong>
+            <ul className="mt-2 space-y-1">
+              <li>• تحقق دائماً من صحة البيانات قبل إرسالها</li>
+              <li>• تعامل مع حدود الطلبات بشكل مناسب</li>
+              <li>• قم بتنفيذ معالجة الأخطاء المناسبة</li>
+              <li>• استخدم مهلات زمنية مناسبة</li>
+              <li>• احتفظ بسجل لمعرفات التذاكر</li>
+            </ul>
           </AlertDescription>
         </Alert>
       </div>
