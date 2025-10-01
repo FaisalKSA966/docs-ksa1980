@@ -1,0 +1,40 @@
+---
+sidebar_label: Introduction
+title: Introduction
+description: Welcome to the documentation for the Discord Ticket Management System.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Welcome
+
+Welcome to the comprehensive documentation for the **Discord Ticket Management System**. This guide will help you understand, set up, and manage your private ticket system.
+
+:::info What is the Ticket System?
+A comprehensive solution for managing support tickets on Discord with a modern web dashboard. The system combines a powerful Discord bot with a **Next.js** web interface, providing real‑time synchronization and advanced features for teams of all sizes.
+:::
+
+## Key Features
+
+- **Real‑time Synchronization:** Instant updates between the Discord bot and the web dashboard with automatic data synchronization.
+- **Advanced Security:** Discord OAuth authentication, role‑based access control and comprehensive audit logging.
+- **Robust Database:** Powered by MongoDB Atlas with automatic JSON fallback for reliability and data persistence.
+- **Modern Web Dashboard:** Built with Next.js 14, TypeScript and Tailwind CSS for a responsive experience.
+
+## System Architecture
+
+The system consists of three main components working together seamlessly:
+
+### Discord Bot
+Built with Node.js 18+ and Discord.js v14, the bot handles all Discord interactions including slash commands, button interactions and ticket management. It features automatic ticket creation, support role management and comprehensive logging.
+
+### Web Dashboard
+A modern web application built with Next.js 14 and TypeScript. It provides a responsive dashboard for managing tickets, settings and team members. Authentication is handled via Discord OAuth and the interface supports both dark and light modes.
+
+### Database
+Data is stored in MongoDB Atlas for high availability and scalability. An automatic JSON fallback ensures that the system continues to operate even if the primary database is unavailable.
+
+## Next Steps
+
+Ready to get started? Head over to the [Quick Start](quick-start) guide to set up your environment and create your first tickets.
