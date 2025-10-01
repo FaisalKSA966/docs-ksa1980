@@ -1,3 +1,5 @@
+"use client"
+
 import { DocsLayout } from "@/components/docs-layout"
 import { enNavigation } from "@/lib/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -140,9 +142,9 @@ class SyncManager {
 
   // Handle sync errors
   async handleSyncError(error) {
-    let attempts = 0;
+    let retryCount = 0;
     
-    while (attempts < this.config.retryAttempts) {
+    while (retryCount < this.config.retryAttempts) {
       try {
         await new Promise(resolve => 
           setTimeout(resolve, this.config.retryDelay)
@@ -150,9 +152,9 @@ class SyncManager {
         await this.sync();
         return;
       } catch (retryError) {
-        attempts++;
+        retryCount++;
         console.error(
-          'Retry attempt ${attempts} failed:',
+          'Retry attempt ${retryCount} failed:',
           retryError
         );
       }
