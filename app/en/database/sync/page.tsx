@@ -3,7 +3,7 @@ import { enNavigation } from "@/lib/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { 
-  Sync,
+  RotateCw,
   Database,
   Server,
   Info,
@@ -17,7 +17,7 @@ export default function DatabaseSync() {
         {/* Header */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Sync className="h-8 w-8 text-primary" />
+            <RotateCw className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-bold">Data Synchronization</h1>
           </div>
           <p className="text-lg text-muted-foreground">
