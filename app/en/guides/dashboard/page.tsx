@@ -1,3 +1,5 @@
+"use client"
+
 import { DocsLayout } from "@/components/docs-layout"
 import { enNavigation } from "@/lib/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
