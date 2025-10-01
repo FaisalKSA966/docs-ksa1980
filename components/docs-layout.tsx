@@ -25,7 +25,6 @@ interface DocsLayoutProps {
 export function DocsLayout({ children, navigation, lang }: DocsLayoutProps) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const isRTL = lang === "ar"
 
   const toggleLanguage = () => {
     const newLang = lang === "en" ? "ar" : "en"
@@ -34,7 +33,7 @@ export function DocsLayout({ children, navigation, lang }: DocsLayoutProps) {
   }
 
   return (
-    <div className={cn("min-h-screen", isRTL && "rtl")} dir={isRTL ? "rtl" : "ltr"}>
+    <div className="min-h-screen">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-sidebar/95 backdrop-blur supports-[backdrop-filter]:bg-sidebar/60">
         <div className="container flex h-16 items-center justify-between px-4">
@@ -45,7 +44,7 @@ export function DocsLayout({ children, navigation, lang }: DocsLayoutProps) {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0">
+              <SheetContent side="left" className="w-80 p-0">
                 <ScrollArea className="h-full py-6">
                   <Navigation items={navigation} pathname={pathname} lang={lang} />
                 </ScrollArea>
@@ -129,7 +128,7 @@ function Navigation({ items, pathname, lang }: { items: NavItem[]; pathname: str
           )}
 
           {item.items && (
-            <div className={cn("space-y-1", lang === "ar" ? "mr-4" : "ml-4")}>
+            <div className="space-y-1 ml-4">
               {item.items.map((subItem, subIndex) => (
                 <Link
                   key={subIndex}
